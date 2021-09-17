@@ -2,6 +2,7 @@
 
 <h1><%= camp.title %> </h1>
 <h2>Hello from <%= camp.location %>!</h2>
+<img src="<%= camp.image %> " alt="Image of the campground">
 
 <footer>
     <form action="/campgrounds/<%= camp._id %>?_method=DELETE" method="POST">
