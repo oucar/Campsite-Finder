@@ -1,0 +1,25 @@
+{
+  "name": "campsite-finder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oucar/campsite-finder.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oucar/campsite-finder/issues"
+  },
+  "homepage": "https://github.com/oucar/campsite-finder#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "mongo": "^0.1.0"
+  }
+}
