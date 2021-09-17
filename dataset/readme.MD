@@ -1,0 +1,1 @@
+Credits: https://data.world/caroline/campgrounds
