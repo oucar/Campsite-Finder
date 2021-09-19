@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+// TODO: DATE ADDED!
 const CampgroundSchema = new Schema({
     title: String,
     image: String,

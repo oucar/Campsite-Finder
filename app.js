@@ -29,6 +29,10 @@ app.use(express.urlencoded({
 }))
 app.use(methodOverride('_method'));
 
+app.use((req, res, next) => {
+    return next();
+})
+
 // ROUTES
 app.get('/', (req, res) => {
     res.render('home.ejs');
@@ -64,7 +68,8 @@ app.post('/campgrounds', async (req, res) => {
     res.redirect(`/campgrounds/${camp._id}`);
 })
 
-// show
+//show
+// TODO: Modal
 app.get('/campgrounds/:id', async (req, res) => {
     const camp = await Campground.findById(req.params.id);
     res.render('campgrounds/show', {camp});
