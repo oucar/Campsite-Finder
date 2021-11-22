@@ -140,6 +140,17 @@ app.post('/campgrounds/:id/reviews', validateReview, catchAsync(async(req, res) 
     res.redirect(`/campgrounds/${campground._id}`);
 }))
 
+// ! delete a review
+app.delete('/campgrounds/:id/reviews/:reviewId', catchAsync(async(req, res) => {
+    const { id, reviewId } = req.params;
+    // https://docs.mongodb.com/manual/reference/operator/update/pull/
+    // update the campground by popping the related review
+    await Campground.findByIdAndUpdate(id, {$pull: {reviews: reviewId}});
+    // then delete the review
+    await Review.findByIdAndDelete(req.params.reviewId);
+    res.redirect(`/campgrounds/${id}`);
+}))
+
 // TEST 
 app.get('/makecampground', catchAsync(async (req, res) => {
     const camp = new Campground({
