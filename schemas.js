@@ -16,8 +16,11 @@ module.exports.campgroundSchema = Joi.object({
 
 module.exports.reviewSchema = Joi.object({
     review: Joi.object({
-        rating: Joi.number().required(),
+        // even though we have validation in client-side,
+        // it's a good idea to include this as well to prevent people from posting empty reviews
+        // using postman etc.
+        rating: Joi.number().required().min(1).max(5),
         body:Joi.string().required(),
-    })
+    }).required()
 })
 

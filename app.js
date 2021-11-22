@@ -99,7 +99,7 @@ app.post('/campgrounds', validateCampground, catchAsync(async (req, res) => {
 //show
 // TODO: Modal
 app.get('/campgrounds/:id', catchAsync(async (req, res) => {
-    const camp = await Campground.findById(req.params.id);
+    const camp = await Campground.findById(req.params.id).populate('reviews');
     res.render('campgrounds/show', {camp});
 }))
 
