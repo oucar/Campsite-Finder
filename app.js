@@ -91,8 +91,11 @@ app.get('/campgrounds/:id', catchAsync(async (req, res) => {
 }))
 
 // edit
-app.get('/campgrounds/:id/edit', validateCampground, catchAsync(async(req, res) => {
+// ! no need to validate when someone is just visiting the edit page!
+app.get('/campgrounds/:id/edit', catchAsync(async(req, res) => {
+    console.log(1231231)
     const camp = await Campground.findById(req.params.id);
+    console.log(camp)
     res.render('campgrounds/edit', {camp});
 }))
 
