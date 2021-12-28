@@ -8,7 +8,7 @@ const ExpressError = require('../utils/ExpressError');
 // models, schemas
 const Campground = require('../models/campground');
 const Review = require('../models/review');
-const {campgroundSchema, reviewSchema} = require('../schemas');
+const {campgroundSchema} = require('../schemas');
 
 
 // ! Server Side Error Handling Middleware
@@ -23,20 +23,6 @@ const validateCampground = (req, res, next) => {
         next();
     }
 }
-
-// ! Review Validation
-const validateReview = (req, res, next) => {
-    const {error} = reviewSchema.validate(req.body);
-    if(error) {
-        // turn array into a string
-        const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg, 400);
-    } else {
-        // or
-        next();
-    }
-}
-
 // ! ROUTES
 // index
 router.get('/', catchAsync(async (req, res) => {
@@ -64,7 +50,7 @@ router.post('/', validateCampground, catchAsync(async (req, res) => {
     })
     await camp.save();
 
-    res.redirect(`//${camp._id}`);
+    res.redirect(`/${camp._id}`);
 }))
 
 //show
@@ -95,31 +81,6 @@ router.delete('/:id', catchAsync(async(req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
     res.redirect('/campgrounds');
-}))
-
-// ? review
-router.post('/:id/reviews', validateReview, catchAsync(async(req, res) => {
-    const campground = await Campground.findById(req.params.id);
-    // review[rating] and review[body] given in the form
-    const review = new Review(req.body.review);
-    // campground model
-    campground.reviews.push(review);
-
-    await review.save();
-    await campground.save();
-
-    res.redirect(`/campgrounds/${campground._id}`);
-}))
-
-// ! delete a review
-router.delete('/:id/reviews/:reviewId', catchAsync(async(req, res) => {
-    const { id, reviewId } = req.params;
-    // https://docs.mongodb.com/manual/reference/operator/update/pull/
-    // update the campground by popping the related review
-    await Campground.findByIdAndUpdate(id, {$pull: {reviews: reviewId}});
-    // then delete the review
-    await Review.findByIdAndDelete(req.params.reviewId);
-    res.redirect(`/campgrounds/${id}`);
 }))
 
 module.exports = router;
