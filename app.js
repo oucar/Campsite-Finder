@@ -35,6 +35,10 @@ app.use(express.urlencoded({
 }))
 app.use(methodOverride('_method'));
 
+// serving static assets
+// path.join, _dirname!
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 // ! ROUTES
 // campground routes
