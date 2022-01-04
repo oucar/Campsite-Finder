@@ -4,9 +4,13 @@ const path = require('path');
 const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
 
+// authentication and flash messages
+const session = require('express-session');
+const flash = require('connect-flash');
+
 // models
 const Campground = require('./models/campground');
-const Review = require('./models/review')
+const Review = require('./models/review');
 
 // mongoose
 const mongoose = require('mongoose');
@@ -38,6 +42,27 @@ app.use(methodOverride('_method'));
 // serving static assets
 // path.join, _dirname!
 app.use(express.static(path.join(__dirname, 'public')));
+
+// session
+const sessionConfig = {
+    secret: 'better!',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        // in ms
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+        // cannot be accessed through client side scripts
+        httpOnly: true,
+
+    }
+    // store: mongo,
+    
+
+
+}
+// we should see a session cookie!
+app.use(session(sessionConfig));
 
 
 // ! ROUTES
