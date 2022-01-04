@@ -54,15 +54,20 @@ const sessionConfig = {
         maxAge: 1000 * 60 * 60 * 24 * 7,
         // cannot be accessed through client side scripts
         httpOnly: true,
-
     }
     // store: mongo,
-    
-
-
 }
-// we should see a session cookie!
+// we should see a session cookie in google chrome!
 app.use(session(sessionConfig));
+app.use(flash());
+
+// in every request we will have access to success flash under the key success in locals
+app.use((req, res, next) => {
+    // all success, errors and other possible flash messages from cookies
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+})
 
 
 // ! ROUTES

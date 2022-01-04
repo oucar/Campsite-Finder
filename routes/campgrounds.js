@@ -40,17 +40,13 @@ router.get('/new', (req, res) => {
 
 router.post('/', validateCampground, catchAsync(async (req, res) => {
     // console.log(req.body);
-    const {campground} = req.body;
-    const camp = new Campground({
-        title: campground.title,
-        location: campground.location,
-        image: campground.image,
-        price: campground.price,
-        description: campground.description,
-    })
-    await camp.save();
+    const campground = new Campground(req.body.campground);
+    await campground.save();
 
-    res.redirect(`/${camp._id}`);
+    // ! TODO: Implement try catch
+    req.flash('success', 'Successfully created a new campground!')
+
+    res.redirect(`/campgrounds/${campground._id}`);
 }))
 
 //show
