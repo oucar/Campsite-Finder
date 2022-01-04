@@ -1,7 +1,17 @@
+<!-- SUCCESS - GREEN -->
 <% if(success && success.length){ %> 
     <!-- REFERENCE: BOOTSTRAP -->
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         <%= success  %> 
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+<% } %> 
+
+<!-- ERROR - RED -->
+<% if(error && error.length){ %> 
+    <!-- REFERENCE: BOOTSTRAP -->
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <%= error  %> 
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
 <% } %> 

@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 
 // utils, validation
 const catchAsync = require('../utils/catchAsync');
@@ -28,9 +29,7 @@ const validateCampground = (req, res, next) => {
 router.get('/', catchAsync(async (req, res) => {
     const campgrounds = await Campground.find({});
     // returns an array
-    res.render('campgrounds/index', {
-        campgrounds
-    });
+    res.render('campgrounds/index', {campgrounds});
 }))
 
 // create
@@ -50,10 +49,27 @@ router.post('/', validateCampground, catchAsync(async (req, res) => {
 }))
 
 //show
-// TODO: Modal
 router.get('/:id', catchAsync(async (req, res) => {
-    const camp = await Campground.findById(req.params.id).populate('reviews');
-    res.render('campgrounds/show', {camp});
+    
+    // ? https://stackoverflow.com/questions/17223517/mongoose-casterror-cast-to-objectid-failed-for-value-object-object-at-path
+    // check if _id is valid
+    if(mongoose.Types.ObjectId.isValid(req.params.id)){
+        const camp = await Campground.findById(req.params.id).populate('reviews');
+        res.render('campgrounds/show', {camp});
+    } else {
+        req.flash('error', 'This campground might be deleted, or who knows, it may have never existed (just like you).');
+        return res.redirect('/campgrounds')
+    }
+    
+    
+
+    // // check if a campground is no longer available
+    // if(!camp){
+    //     req.flash('error', 'This campground might be deleted, or who knows, it may have never existed (just like you).');
+    //     return res.redirect('/campgrounds')
+    // }
+
+    
 }))
 
 // edit
@@ -69,6 +85,8 @@ router.put('/:id', catchAsync(async(req, res) => {
     const { id } = req.params;
     // spread the object (camground[title], campground[location])
     const camp = await Campground.findByIdAndUpdate(id, {...req.body.campground});
+    // flash message
+    req.flash('success', 'Successfully updated a campground.');
     res.redirect(`/campgrounds/${camp._id}`);
 }))
 
@@ -76,6 +94,10 @@ router.put('/:id', catchAsync(async(req, res) => {
 router.delete('/:id', catchAsync(async(req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
+
+    // flash message
+    req.flash('success', 'Successfully deleted a campground.');
+
     res.redirect('/campgrounds');
 }))
 
