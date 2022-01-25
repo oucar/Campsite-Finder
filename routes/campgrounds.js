@@ -61,15 +61,6 @@ router.get('/:id', catchAsync(async (req, res) => {
         return res.redirect('/campgrounds')
     }
     
-    
-
-    // // check if a campground is no longer available
-    // if(!camp){
-    //     req.flash('error', 'This campground might be deleted, or who knows, it may have never existed (just like you).');
-    //     return res.redirect('/campgrounds')
-    // }
-
-    
 }))
 
 // edit
