@@ -3,12 +3,12 @@ const app = express();
 const path = require('path');
 const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
-
-// authentication and flash messages
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
 
-// models
+// Models
 const Campground = require('./models/campground');
 const Review = require('./models/review');
 
@@ -57,9 +57,16 @@ const sessionConfig = {
     }
     // store: mongo,
 }
-// we should see a session cookie in google chrome!
+
+// Sessions
 app.use(session(sessionConfig));
 app.use(flash());
+
+// Passport
+// ! Passport should come after Sessions!
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 // in every request we will have access to success flash under the key success in locals
 app.use((req, res, next) => {
