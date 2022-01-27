@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 // utils, validation
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
+const {isLoggedIn} = require('../utils/isLoggedIn')
 
 // models, schemas
 const Campground = require('../models/campground');
@@ -33,11 +34,12 @@ router.get('/', catchAsync(async (req, res) => {
 }))
 
 // create
-router.get('/new', (req, res) => {
-    res.render('campgrounds/new');
+// ! isLoggedIn
+router.get('/new', isLoggedIn, (req, res) => {
+    res.render('campgrounds/new');  
 })
 
-router.post('/', validateCampground, catchAsync(async (req, res) => {
+router.post('/', isLoggedIn, validateCampground, catchAsync(async (req, res) => {
     // console.log(req.body);
     const campground = new Campground(req.body.campground);
     await campground.save();
@@ -65,14 +67,14 @@ router.get('/:id', catchAsync(async (req, res) => {
 
 // edit
 // ! no need to validate when someone is just visiting the edit page!
-router.get('/:id/edit', catchAsync(async(req, res) => {
+router.get('/:id/edit', isLoggedIn, catchAsync(async(req, res) => {
     console.log(1231231)
     const camp = await Campground.findById(req.params.id);
     console.log(camp)
     res.render('campgrounds/edit', {camp});
 }))
 
-router.put('/:id', catchAsync(async(req, res) => {
+router.put('/:id', isLoggedIn, catchAsync(async(req, res) => {
     const { id } = req.params;
     // spread the object (camground[title], campground[location])
     const camp = await Campground.findByIdAndUpdate(id, {...req.body.campground});
@@ -82,7 +84,7 @@ router.put('/:id', catchAsync(async(req, res) => {
 }))
 
 // delete
-router.delete('/:id', catchAsync(async(req, res) => {
+router.delete('/:id', isLoggedIn, catchAsync(async(req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
 
