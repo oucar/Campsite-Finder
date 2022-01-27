@@ -11,6 +11,7 @@ const LocalStrategy = require('passport-local');
 // Models
 const Campground = require('./models/campground');
 const Review = require('./models/review');
+const User = require('./models/user');
 
 // mongoose
 const mongoose = require('mongoose');
@@ -21,8 +22,9 @@ mongoose.connect('mongodb://localhost:27017/campgrounds', {
 });
 
 // Routes
-const campgrounds = require('./routes/campgrounds');
-const reviews = require('./routes/reviews')
+const campgroundRoutes = require('./routes/campgrounds');
+const reviewRoutes = require('./routes/reviews');
+const userRoutes = require('./routes/users');
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "Error - CONNECTING THE DATABASE: "));
@@ -66,6 +68,10 @@ app.use(flash());
 // ! Passport should come after Sessions!
 app.use(passport.initialize());
 app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 
 // in every request we will have access to success flash under the key success in locals
@@ -79,9 +85,11 @@ app.use((req, res, next) => {
 
 // ! ROUTES
 // campground routes
-app.use('/campgrounds', campgrounds);
+app.use('/campgrounds', campgroundRoutes);
 // review routes
-app.use('/campgrounds/:id/reviews', reviews);
+app.use('/campgrounds/:id/reviews', reviewRoutes);
+// users (login and register) routes (no need to prefix)
+app.use('/', userRoutes);
 
 
 app.get('/', (req, res) => {
