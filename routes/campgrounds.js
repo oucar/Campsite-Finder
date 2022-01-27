@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 // utils, validation
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
-const {isLoggedIn} = require('../utils/isLoggedIn')
+const {isLoggedIn} = require('../middleware')
 
 // models, schemas
 const Campground = require('../models/campground');
@@ -86,7 +86,7 @@ router.put('/:id', isLoggedIn, catchAsync(async(req, res) => {
 // delete
 router.delete('/:id', isLoggedIn, catchAsync(async(req, res) => {
     const { id } = req.params;
-    await Campground.findByIdAndDelete(id);
+    await Campground.findByIdAndDelete(id); 
 
     // flash message
     req.flash('success', 'Successfully deleted a campground.');
