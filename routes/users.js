@@ -41,12 +41,12 @@ router.get('/login', (req, res) => {
 router.post('/login', passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), (req, res) => {
     req.flash('success', 'Welcome back! ✨');
     // redirectUrl is returnTo (if exists) or  '/campgrounds'
-    const redirectUrl = req.session.returnTo || '/camgrounds';
-    // clean the session
-    delete req.session.returnTo;
-    res.redirect(redirectUrl);
-
-
+    if(!req.session.returnTo){
+        res.redirect('/campgrounds');
+    } else {
+        delete req.session.returnTo;
+        res.redirect(req.session.returnTo);
+    }
 })
 
 // Logout
