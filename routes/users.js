@@ -18,7 +18,7 @@ router.post('/register', catchAsync(async(req, res, next ) => {
         const {email, username, password} = req.body;
         const user = new User({email, username});
         const registeredUser = await User.register(user, password);
-        // console.log(registeredUser);
+        console.log(`USER REGISTERED!!: ${registeredUser}`);
 
         // you need a callback :(
         req.login(registeredUser, err => {

@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 // utils, validation
 const catchAsync = require('../utils/catchAsync');
-const ExpressError = require('../utils/ExpressError');
+const {ExpressError} = require('../utils/ExpressError');
 const {isLoggedIn} = require('../middleware')
 
 // models, schemas
@@ -42,6 +42,8 @@ router.get('/new', isLoggedIn, (req, res) => {
 router.post('/', isLoggedIn, validateCampground, catchAsync(async (req, res) => {
     // console.log(req.body);
     const campground = new Campground(req.body.campground);
+    // adding an author to the campground
+    campground.author = req.user._id;
     await campground.save();
 
     // ! TODO: Implement try catch
@@ -56,7 +58,9 @@ router.get('/:id', catchAsync(async (req, res) => {
     // ? https://stackoverflow.com/questions/17223517/mongoose-casterror-cast-to-objectid-failed-for-value-object-object-at-path
     // check if _id is valid
     if(mongoose.Types.ObjectId.isValid(req.params.id)){
-        const camp = await Campground.findById(req.params.id).populate('reviews');
+        // populate reviews and author
+        const camp = await Campground.findById(req.params.id).populate('reviews').populate('author');
+        console.log(camp);
         res.render('campgrounds/show', {camp});
     } else {
         req.flash('error', 'This campground might be deleted, or who knows, it may have never existed (just like you).');
