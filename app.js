@@ -74,13 +74,14 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 
-// in every request we will have access to success flash under the key success in locals
+// middleware
+// ! in every request we will have access to success flash under the key success in locals
 app.use((req, res, next) => {
 
     // check returnTo!
     console.log(req.session);
 
-    // we will have access to currentUser in all templates
+    // ! we will have access to currentUser in all templates
     res.locals.currentUser = req.user;
 
     // all success, errors and other possible flash messages from cookies
