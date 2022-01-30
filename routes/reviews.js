@@ -6,36 +6,25 @@ const router = express.Router( { mergeParams:true });
 // utils, validation
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
+const {validateReview, isLoggedIn, isReviewAuthor} = require('../middleware');
 
 // models, schemas
 const Campground = require('../models/campground');
 const Review = require('../models/review');
 const {reviewSchema} = require('../schemas');
 
-// ! Review Validation
-const validateReview = (req, res, next) => {
-    const {error} = reviewSchema.validate(req.body);
-    if(error) {
-        // turn array into a string
-        const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg, 400);
-    } else {
-        // or
-        next();
-    }
-}
-
 // ? review
-router.post('/', validateReview, catchAsync(async(req, res) => {
+router.post('/', isLoggedIn, validateReview, catchAsync(async(req, res) => {
     const campground = await Campground.findById(req.params.id);
 
     // review[rating] and review[body] given in the form
     // ! WE DON'T HAVE ACCESS TO PARAMS IN THE ROUTE GIVEN IN APP.JS
     // use mergeParams: true to fix this!
-    console.log(req.params);
+    // console.log(req.params);
 
     const review = new Review(req.body.review);
     // campground model
+    review.author = req.user._id;
     campground.reviews.push(review);
 
     await review.save();
@@ -48,7 +37,7 @@ router.post('/', validateReview, catchAsync(async(req, res) => {
 }))
 
 // ! delete a review
-router.delete('/:reviewId', catchAsync(async(req, res) => {
+router.delete('/:reviewId', isLoggedIn, isReviewAuthor, catchAsync(async(req, res) => {
     const { id, reviewId } = req.params;
     // https://docs.mongodb.com/manual/reference/operator/update/pull/
     // update the campground by popping the related review

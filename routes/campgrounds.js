@@ -45,13 +45,18 @@ router.post('/', isLoggedIn, validateCampground, catchAsync(async (req, res) => 
 }))
 
 // show
-router.get('/:id', isLoggedIn, catchAsync(async (req, res) => {
-    
+router.get('/:id', catchAsync(async (req, res) => {
     // ? https://stackoverflow.com/questions/17223517/mongoose-casterror-cast-to-objectid-failed-for-value-object-object-at-path
     // check if _id is valid
     if(mongoose.Types.ObjectId.isValid(req.params.id)){
         // populate reviews and author
-        const camp = await Campground.findById(req.params.id).populate('reviews').populate('author');
+        const camp = await Campground.findById(req.params.id).populate({
+            // ! we also need to populate each review's author! - nested populate
+            path: 'reviews', 
+            populate: {
+                path: 'author'
+            }
+        }).populate('author');
         console.log(camp);
         res.render('campgrounds/show', {camp});
     } else {
