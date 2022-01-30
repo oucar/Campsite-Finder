@@ -26,6 +26,23 @@ const validateCampground = (req, res, next) => {
         next();
     }
 }
+
+// ! Server Side Authorization Middleware
+// Protecting agains Postman submissions and accessing pages like edit and delete by typing the url
+// needs to be async because it needs to "await" for the campground
+const isAuthor = async (req, res, next) => {
+    const { id } = req.params;
+    const campground = await Campground.findById(id);
+    // if author id is not equal to the requester's id
+    if(!campground.author.equals(req.user._id)){
+        req.flash('error', 'You do not have permission to perform this action!');
+        res.redirect(`/campgrounds/${id}`);
+    } 
+    // you do have permission to edit/delete
+    next();
+}
+
+
 // ! ROUTES
 // index
 router.get('/', catchAsync(async (req, res) => {
@@ -76,14 +93,11 @@ router.get('/:id', catchAsync(async (req, res) => {
 
 // edit
 // ! no need to validate when someone is just visiting the edit page!
-router.get('/:id/edit', isLoggedIn, catchAsync(async(req, res) => {
-    const camp = await Campground.findById(req.params.id);
-
-    // user is not logged in, (prevent Postman submission and trying to access the page by typing the link)
-    if(!campground.author.equals(req.user._id)){
-        req.flash('error', 'You do not have the permission to perform this operation!');
-        return res.redirect(`/campgrounds/${id}`);
-    }
+// user is not logged in, (prevent Postman submission and trying to access the page by typing the link)
+// user onur cannot edit http://localhost:3000/campgrounds/61f4ed4eec97d227ef94b941
+router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(async(req, res) => {
+    const { id } = req.params;
+    const camp = await Campground.findById(id);
 
     // cannot find the campground
     if(!camp){
@@ -97,14 +111,6 @@ router.get('/:id/edit', isLoggedIn, catchAsync(async(req, res) => {
 router.put('/:id', isLoggedIn, catchAsync(async(req, res) => {
     const { id } = req.params;
     
-    // Protecting against the Postman etc.
-    const campground = await Campground.findById(id);
-    // if author id is not equal to the requester's id
-    if(!campground.author.equals(req.user._id)){
-        req.flash('error', 'You do not have permission to perform this action!');
-        res.redirect(`/campgrounds/${id}`);
-    } 
-
     // spread the object (camground[title], campground[location])
     const camp = await Campground.findByIdAndUpdate(id, {...req.body.campground});
     req.flash('success', 'Successfully updated a campground.');

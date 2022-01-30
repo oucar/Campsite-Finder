@@ -44,8 +44,8 @@ router.post('/login', passport.authenticate('local', {failureFlash: true, failur
     if(!req.session.returnTo){
         res.redirect('/campgrounds');
     } else {
-        delete req.session.returnTo;
         res.redirect(req.session.returnTo);
+        delete req.session.returnTo;
     }
 })
 
