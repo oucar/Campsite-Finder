@@ -1,7 +1,6 @@
 const Campground = require('../models/campground');
 const mongoose = require('mongoose');
 
-
 // ! INDEX
 module.exports.index = async (req, res) => {
     const campgrounds = await Campground.find({});
