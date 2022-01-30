@@ -75,7 +75,7 @@ router.post('/', isLoggedIn, validateCampground, catchAsync(async (req, res) => 
 }))
 
 // show
-router.get('/:id', catchAsync(async (req, res) => {
+router.get('/:id', isLoggedIn, catchAsync(async (req, res) => {
     
     // ? https://stackoverflow.com/questions/17223517/mongoose-casterror-cast-to-objectid-failed-for-value-object-object-at-path
     // check if _id is valid
@@ -108,7 +108,7 @@ router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(async(req, res) => {
     res.render('campgrounds/edit', {camp});
 }))
 
-router.put('/:id', isLoggedIn, catchAsync(async(req, res) => {
+router.put('/:id', isLoggedIn, isAuthor, catchAsync(async(req, res) => {
     const { id } = req.params;
     
     // spread the object (camground[title], campground[location])
@@ -118,7 +118,7 @@ router.put('/:id', isLoggedIn, catchAsync(async(req, res) => {
 }))
 
 // delete
-router.delete('/:id', isLoggedIn, catchAsync(async(req, res) => {
+router.delete('/:id', isLoggedIn, isAuthor, catchAsync(async(req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id); 
 
