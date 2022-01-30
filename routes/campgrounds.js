@@ -46,8 +46,12 @@ router.post('/', isLoggedIn, validateCampground, catchAsync(async (req, res) => 
     campground.author = req.user._id;
     await campground.save();
 
-    // ! TODO: Implement try catch
-    req.flash('success', 'Successfully created a new campground!')
+    try{
+        req.flash('success', 'Successfully created a new campground!')
+    } catch (e){
+        req.flash('error', `Something went wrong: ${e}`);
+    }
+    
 
     res.redirect(`/campgrounds/${campground._id}`);
 }))
