@@ -7,42 +7,21 @@ const catchAsync = require('../utils/catchAsync');
 const {ExpressError} = require('../utils/ExpressError');
 const {isLoggedIn, isAuthor, validateCampground} = require('../middleware')
 
-// models, schemas
+// models, schemas, controller
 const {campgroundSchema} = require('../schemas');
 const Campground = require('../models/campground');
 const Review = require('../models/review');
 const campground = require('../models/campground');
+const campgroundController = require('../controllers/campgrounds');
 
-// ! ROUTES
-// index
-router.get('/', catchAsync(async (req, res) => {
-    const campgrounds = await Campground.find({});
-    // returns an array
-    res.render('campgrounds/index', {campgrounds});
-}))
+// ! #### ROUTES #### 
 
-// create
-// ! isLoggedIn
-router.get('/new', isLoggedIn, (req, res) => {
-    res.render('campgrounds/new');  
-})
+// ! INDEX
+router.get('/', catchAsync(campgroundController.index));
 
-router.post('/', isLoggedIn, validateCampground, catchAsync(async (req, res) => {
-    // console.log(req.body);
-    const campground = new Campground(req.body.campground);
-    // adding an author to the campground
-    campground.author = req.user._id;
-    await campground.save();
-
-    try{
-        req.flash('success', 'Successfully created a new campground!')
-    } catch (e){
-        req.flash('error', `Something went wrong: ${e}`);
-    }
-    
-
-    res.redirect(`/campgrounds/${campground._id}`);
-}))
+// ! NEW
+router.get('/new', isLoggedIn, campgroundController.newGet);
+router.post('/', isLoggedIn, validateCampground, catchAsync(campgroundController.newPost));
 
 // show
 router.get('/:id', catchAsync(async (req, res) => {

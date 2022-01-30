@@ -46,7 +46,7 @@ router.delete('/:reviewId', isLoggedIn, isReviewAuthor, catchAsync(async(req, re
     await Review.findByIdAndDelete(req.params.reviewId);
 
     // flash message
-    req.flash('success', 'Successfully deleted a review :(.');
+    req.flash('success', 'Successfully deleted a review. 💥');
     res.redirect(`/campgrounds/${id}`);
 }))
 
