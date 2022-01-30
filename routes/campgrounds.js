@@ -11,6 +11,7 @@ const {isLoggedIn} = require('../middleware')
 const Campground = require('../models/campground');
 const Review = require('../models/review');
 const {campgroundSchema} = require('../schemas');
+const campground = require('../models/campground');
 
 
 // ! Server Side Error Handling Middleware
@@ -56,7 +57,7 @@ router.post('/', isLoggedIn, validateCampground, catchAsync(async (req, res) => 
     res.redirect(`/campgrounds/${campground._id}`);
 }))
 
-//show
+// show
 router.get('/:id', catchAsync(async (req, res) => {
     
     // ? https://stackoverflow.com/questions/17223517/mongoose-casterror-cast-to-objectid-failed-for-value-object-object-at-path
@@ -76,17 +77,36 @@ router.get('/:id', catchAsync(async (req, res) => {
 // edit
 // ! no need to validate when someone is just visiting the edit page!
 router.get('/:id/edit', isLoggedIn, catchAsync(async(req, res) => {
-    console.log(1231231)
     const camp = await Campground.findById(req.params.id);
-    console.log(camp)
+
+    // user is not logged in, (prevent Postman submission and trying to access the page by typing the link)
+    if(!campground.author.equals(req.user._id)){
+        req.flash('error', 'You do not have the permission to perform this operation!');
+        return res.redirect(`/campgrounds/${id}`);
+    }
+
+    // cannot find the campground
+    if(!camp){
+        req.flash('error', 'Cannot find the campground! :(');
+        return res.redirect('/campgrounds');
+    }
+
     res.render('campgrounds/edit', {camp});
 }))
 
 router.put('/:id', isLoggedIn, catchAsync(async(req, res) => {
     const { id } = req.params;
+    
+    // Protecting against the Postman etc.
+    const campground = await Campground.findById(id);
+    // if author id is not equal to the requester's id
+    if(!campground.author.equals(req.user._id)){
+        req.flash('error', 'You do not have permission to perform this action!');
+        res.redirect(`/campgrounds/${id}`);
+    } 
+
     // spread the object (camground[title], campground[location])
     const camp = await Campground.findByIdAndUpdate(id, {...req.body.campground});
-    // flash message
     req.flash('success', 'Successfully updated a campground.');
     res.redirect(`/campgrounds/${camp._id}`);
 }))
