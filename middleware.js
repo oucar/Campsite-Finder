@@ -1,4 +1,4 @@
-const {campgroundSchema} = require('../schemas');
+const {campgroundSchema} = require('./schemas');
 
 // ! Server Side check if logged in 
 // ? you cannot do something* if you're not authenticate

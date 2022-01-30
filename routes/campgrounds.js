@@ -8,6 +8,7 @@ const {ExpressError} = require('../utils/ExpressError');
 const {isLoggedIn, isAuthor, validateCampground} = require('../middleware')
 
 // models, schemas
+const {campgroundSchema} = require('../schemas');
 const Campground = require('../models/campground');
 const Review = require('../models/review');
 const campground = require('../models/campground');
