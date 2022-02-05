@@ -14,6 +14,7 @@ const campground = require('../models/campground');
 const campgroundController = require('../controllers/campgrounds');
 
 // ! #### ROUTES #### 
+// ? We can also use route.route !
 
 // ! INDEX
 router.get('/', catchAsync(campgroundController.index));
