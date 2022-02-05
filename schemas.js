@@ -19,6 +19,7 @@ module.exports.reviewSchema = Joi.object({
         // even though we have validation in client-side,
         // it's a good idea to include this as well to prevent people from posting empty reviews
         // using postman etc.
+        // ? min can be changed to 0?
         rating: Joi.number().required().min(1).max(5),
         body:Joi.string().required(),
     }).required()
