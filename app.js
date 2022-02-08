@@ -7,6 +7,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
+const ExpressError = require('./utils/ExpressError');
 
 // Models
 const Campground = require('./models/campground');
