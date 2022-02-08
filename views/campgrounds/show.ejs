@@ -3,7 +3,24 @@
 <div class="row">
     <div class="col-6">
         <div class="card">
-            <img src="<%= camp.image %> " class="card-img-top" alt="Campground Image">
+
+            <!-- ! Calculating the average review -->
+            <% let avgRating = 0; %>
+            <% let totalReviews = camp.reviews.length; %>  
+            <% for(let review of camp.reviews){ %>
+                <% avgRating += review.rating %> 
+            <% } %>
+            
+            <!-- ! Fixed to 2 decimals -->
+            <% avgRating = avgRating / totalReviews; %> 
+            <% avgRating = + avgRating.toFixed(2);  %> 
+
+
+            <% for(let img of camp.images){ %>
+                <img src="<%=img.url%>" class="card-img-top" alt="Campground Image">
+            <% } %>  
+
+
             <div class="card-body">
                 <h5 class="card-title"><%= camp.title %> </h5>
                 <p class="card-text"><%= camp.description %></p>
@@ -26,8 +43,12 @@
 
             <!-- TODO FUNCTIONAL DATE ADDED -->
             <div class="card-footer text-muted">
-                2 days ago
+                <div class="d-flex justify-content-between">
+                    <span>2 days ago</span>
+                    <p>Average review: <%= avgRating %>/5 </p>
+                </div>
             </div>
+            
         </div>
     </div>
 
@@ -68,6 +89,9 @@
     </div>
     <% } %>
 
+
+
+
     <!-- Display Reviews -->
     <% for(let review of camp.reviews){ %>
     <div class="card mb-3">
@@ -91,5 +115,8 @@
         </div>
     </div>
     <% } %>
+
+
+    
 </div>
 </div>

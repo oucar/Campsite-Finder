@@ -20,14 +20,19 @@ module.exports.newPost = async (req, res) => {
     const campground = new Campground(req.body.campground);
     // adding an author to the campground
     campground.author = req.user._id;
+    
+    // !images
+    campground.images = req.files.map(f => ({url: f.path, filename: f.filename}))
+    
     await campground.save();
-
+    
     try{
         req.flash('success', 'Successfully created a new campground!')
     } catch (e){
         req.flash('error', `Something went wrong: ${e}`);
     }
 
+    console.log(campground)
     res.redirect(`/campgrounds/${campground._id}`);
 }
 

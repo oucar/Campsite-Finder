@@ -16,8 +16,13 @@
                 <h5 class="card-title"> <%= camp.title %> </h5>
                 <p class="card-text"> <%= camp.description %> </p>
                 <p class="card-text">
-                    <small class="text-muted"> <%= camp.location %> </small>
+                    <small class="text-muted"> <%= camp.location %> </small>                    
                 </p>
+
+                <p class="card-text">
+                    <small class="text-muted"> ${avgRating} </small>
+                </p>
+
                 <a href="campgrounds/<%= camp._id %> " class="btn btn-primary" name="modal">View <%= camp.title %> </a>
             </div>
         </div>

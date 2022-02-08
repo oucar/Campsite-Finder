@@ -17,7 +17,8 @@ const campgroundController = require('../controllers/campgrounds');
 // Multer - uploading images
 // Cloudinary to save files in the cloud
 const multer = require('multer');
-const upload = multer({dest: '../uploads'});
+const {storage} = require('../cloudinary/index');
+const upload = multer({storage});
 
 // ! #### ROUTES #### 
 // ? We can also use route.route !
@@ -27,11 +28,8 @@ router.get('/', catchAsync(campgroundController.index));
 
 // ! NEW
 router.get('/new', isLoggedIn, campgroundController.newGet);
-// router.post('/', isLoggedIn, validateCampground, catchAsync(campgroundController.newPost));
-router.post('/', upload.array('campground[image]'), (req, res) =>{
-    console.log(req.body, req.files);
-    res.send("IT WORKED.")
-})
+router.post('/', isLoggedIn, upload.array('image'), validateCampground, catchAsync(campgroundController.newPost));
+
 
 // ! SHOW
 router.get('/:id', catchAsync(campgroundController.showGet));

@@ -6,7 +6,12 @@ const Schema = mongoose.Schema;
 // TODO: DATE ADDED! --> https://momentjs.com/ 
 const CampgroundSchema = new Schema({
     title: String,
-    image: String,
+    images: [
+        {
+            url: String,
+            filename: String,
+        }
+    ],
     price: Number,
     description: String,
     location: String,
