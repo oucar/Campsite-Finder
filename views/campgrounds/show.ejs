@@ -1,24 +1,25 @@
 <%- layout('layouts/boilerplate')%>
 <link rel="stylesheet" href="/css/stars.css">
+<link rel="stylesheet" href="/css/card.css">
 <div class="row">
     <div class="col-6">
         <div class="card">
 
             <!-- ! Calculating the average review -->
             <% let avgRating = 0; %>
-            <% let totalReviews = camp.reviews.length; %>  
+            <% let totalReviews = camp.reviews.length; %>
             <% for(let review of camp.reviews){ %>
-                <% avgRating += review.rating %> 
+            <% avgRating += review.rating %>
             <% } %>
-            
+
             <!-- ! Fixed to 2 decimals -->
-            <% avgRating = avgRating / totalReviews; %> 
-            <% avgRating = + avgRating.toFixed(2);  %> 
+            <% avgRating = avgRating / totalReviews; %>
+            <% avgRating = + avgRating.toFixed(2);  %>
 
 
             <% for(let img of camp.images){ %>
-                <img src="<%=img.url%>" class="card-img-top" alt="Campground Image">
-            <% } %>  
+            <img src="<%=img.url%>" class="card-img-top" alt="Campground Image">
+            <% } %>
 
 
             <div class="card-body">
@@ -48,7 +49,7 @@
                     <p>Average review: <%= avgRating %>/5 </p>
                 </div>
             </div>
-            
+
         </div>
     </div>
 
@@ -62,20 +63,20 @@
                 <!-- <label lass="form-label" for="rating">Rating</label>
                     <input type="range" class="form-range validated-form" min="1" max="5" name="review[rating]" id="review"
                         required> -->
-                    <fieldset class="starability-checkmark">
-                        <input type="radio" id="first-rate" class="input-no-rate" name="review[rating]" value="1" checked
-                            aria-label="No rating." />
-                        <input type="radio" id="first-rate1" name="review[rating]" value="1" />
-                        <label for="first-rate1" title="Terrible">1 star</label>
-                        <input type="radio" id="first-rate2" name="review[rating]" value="2" />
-                        <label for="first-rate2" title="Not good">2 stars</label>
-                        <input type="radio" id="first-rate3" name="review[rating]" value="3" />
-                        <label for="first-rate3" title="Average">3 stars</label>
-                        <input type="radio" id="first-rate4" name="review[rating]" value="4" />
-                        <label for="first-rate4" title="Very good">4 stars</label>
-                        <input type="radio" id="first-rate5" name="review[rating]" value="5" />
-                        <label for="first-rate5" title="Amazing">5 stars</label>
-                    </fieldset>
+                <fieldset class="starability-checkmark">
+                    <input type="radio" id="first-rate" class="input-no-rate" name="review[rating]" value="1" checked
+                        aria-label="No rating." />
+                    <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                    <label for="first-rate1" title="Terrible">1 star</label>
+                    <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                    <label for="first-rate2" title="Not good">2 stars</label>
+                    <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                    <label for="first-rate3" title="Average">3 stars</label>
+                    <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                    <label for="first-rate4" title="Very good">4 stars</label>
+                    <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                    <label for="first-rate5" title="Amazing">5 stars</label>
+                </fieldset>
 
                 <div class="mb-3">
                     <label class="form-label" for="body">Review</label>
@@ -88,35 +89,34 @@
         </form>
     </div>
     <% } %>
+</div>
 
-
-
-
-    <!-- Display Reviews -->
+<!-- Display Reviews -->
+<!-- Flex -->
+<div>
+    <div class="row" style="margin-left:0px;">
     <% for(let review of camp.reviews){ %>
-    <div class="card mb-3">
+        <div class="card mt-3 justify-content-between">
 
-        <div class="card-body">
-            <!-- <h4 class="card-title">Rating: <%= review.rating %> </h4> -->
-            <h6 class="card-subtitle mb-2 text-muted">@<%= review.author.username %> </h6>
-            <p><%= review.body %> </p>
-
-            <p class="starability-result" data-rating="<%=review.rating %>">
-                Rated: <%= review.rating %> stars
-
-
+            <div class="card-body">
+                <!-- <h4 class="card-title">Rating: <%= review.rating %> </h4> -->
+                <h6 class="card-subtitle mb-2 text-muted">@<%= review.author.username %> </h6>
+                <p><%= review.body %> </p>
+    
+                <p class="starability-result" data-rating="<%=review.rating %>">
+                    Rated: <%= review.rating %> stars
+    
+    
                 <% if(currentUser && review.author.equals(currentUser._id)){ %>
                 <!-- method override -->
                 <form action="/campgrounds/<%= camp._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
                     <button class="btn btn-sm btn-danger">Delete</button>
                 </form>
                 <% } %>
-
-        </div>
-    </div>
-    <% } %>
-
-
     
-</div>
+            </div>
+        </div>
+        <% } %>
+    </div>
+
 </div>
