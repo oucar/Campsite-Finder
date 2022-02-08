@@ -3,7 +3,10 @@ const mongoose = require('mongoose');
 
 // ! INDEX
 module.exports.index = async (req, res) => {
-    const campgrounds = await Campground.find({});
+    const campgrounds = await Campground.find({}).populate({
+        path: 'reviews'
+    });
+    
     // returns an array
     res.render('campgrounds/index', {campgrounds});
 }
