@@ -13,6 +13,11 @@ const Review = require('../models/review');
 const campground = require('../models/campground');
 const campgroundController = require('../controllers/campgrounds');
 
+
+// Multer - uploading images
+const multer = require('multer');
+const upload = multer({dest: '/uploads'});
+
 // ! #### ROUTES #### 
 // ? We can also use route.route !
 
