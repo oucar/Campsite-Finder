@@ -3,8 +3,33 @@
 <link rel="stylesheet" href="/css/card.css">
 <div class="row">
     <div class="col-6">
-        <div class="card">
 
+        <div id="carouselCampground" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+
+                <!-- Adding images -->
+                <!-- We have access to index in forEach -->
+                <% camp.images.forEach((img, i) => { %> 
+                <!-- first image is active -->
+                <div class="carousel-item <%= i === 0 ? 'active' : '' %> ">
+                        <img class="d-block w-100" src="<%=img.url%>" alt="Campground Image">
+                    </div>
+                <% }) %>
+
+            </div>
+            <% if(camp.images.length > 1){ %> 
+                <a class="carousel-control-prev" href="#carouselCampground" role="button" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselCampground" role="button" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            <% } %> 
+        </div>
+
+        <div class="card">
             <!-- ! Calculating the average review -->
             <% let avgRating = 0; %>
             <% let totalReviews = camp.reviews.length; %>
@@ -15,12 +40,6 @@
             <!-- ! Fixed to 2 decimals -->
             <% avgRating = avgRating / totalReviews; %>
             <% avgRating = + avgRating.toFixed(2);  %>
-
-
-            <% for(let img of camp.images){ %>
-            <img src="<%=img.url%>" class="card-img-top" alt="Campground Image">
-            <% } %>
-
 
             <div class="card-body">
                 <h5 class="card-title"><%= camp.title %> </h5>
@@ -95,25 +114,25 @@
 <!-- Flex -->
 <div>
     <div class="row" style="margin-left:0px;">
-    <% for(let review of camp.reviews){ %>
+        <% for(let review of camp.reviews){ %>
         <div class="card mt-3 justify-content-between">
 
             <div class="card-body">
                 <!-- <h4 class="card-title">Rating: <%= review.rating %> </h4> -->
                 <h6 class="card-subtitle mb-2 text-muted">@<%= review.author.username %> </h6>
                 <p><%= review.body %> </p>
-    
+
                 <p class="starability-result" data-rating="<%=review.rating %>">
                     Rated: <%= review.rating %> stars
-    
-    
-                <% if(currentUser && review.author.equals(currentUser._id)){ %>
-                <!-- method override -->
-                <form action="/campgrounds/<%= camp._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
-                    <button class="btn btn-sm btn-danger">Delete</button>
-                </form>
-                <% } %>
-    
+
+
+                    <% if(currentUser && review.author.equals(currentUser._id)){ %>
+                    <!-- method override -->
+                    <form action="/campgrounds/<%= camp._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                    <% } %>
+
             </div>
         </div>
         <% } %>
