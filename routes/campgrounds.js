@@ -39,7 +39,7 @@ router.get('/:id', catchAsync(campgroundController.showGet));
 // user is not logged in, (prevent Postman submission and trying to access the page by typing the link)
 // user onur cannot edit http://localhost:3000/campgrounds/61f4ed4eec97d227ef94b941
 router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(campgroundController.editGet));
-router.put('/:id', isLoggedIn, isAuthor, catchAsync(campgroundController.editPut));
+router.put('/:id', isLoggedIn, isAuthor, upload.array('image'), validateCampground, catchAsync(campgroundController.editPut));
 
 // ! DELETE
 router.delete('/:id', isLoggedIn, isAuthor, catchAsync(campgroundController.deleteDelete));

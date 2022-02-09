@@ -83,6 +83,12 @@ module.exports.editPut = async(req, res) => {
     
     // spread the object (camground[title], campground[location])
     const camp = await Campground.findByIdAndUpdate(id, {...req.body.campground});
+
+    // we are pushing this time, so that we don't overwrite the existing images
+    const imgs = req.files.map(f => ({url: f.path, filename: f.filename}));
+    camp.images.push(...imgs);
+    await camp.save();
+
     req.flash('success', 'Successfully updated a campground.');
     res.redirect(`/campgrounds/${camp._id}`);
 }

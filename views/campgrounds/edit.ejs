@@ -4,7 +4,8 @@
     <h1 class="text center">Edit Campground</h1>
     <div class="col-6 offset-3">
         <!-- method overriding -->
-        <form action="/campgrounds/<%= camp._id %>?_method=PUT" method="POST" novalidate class="validated-form">
+        <!-- check routes! upload.array('image') after isLoggedin etc -->
+        <form action="/campgrounds/<%= camp._id %>?_method=PUT" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
 
             <div class="mb-3">
                 <label class="form-label" for="title">Title</label>
@@ -17,8 +18,8 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label" for="image">Image URL</label>
-                <input class="form-control" type="text" name="campground[image]" id="image" value="<%= camp.image %>" required>
+                <label class="form-label" for="image">Add Images</label>
+                <input type="file" name="image" id="image" multiple>
             </div>
 
             <div class="mb-3">
