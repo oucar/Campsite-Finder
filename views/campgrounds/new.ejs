@@ -25,7 +25,37 @@
                 </div>
             </div>
 
-            <input type="file" name="image" id="" multiple>
+            <div class="mb-3">
+                <label class="mb-2" for="form-label" for="price">Campground Price</label>
+                <div class="input-group">
+                    <span class="input-group-text">$</span>
+                    <input type="text" class="form-control" id="price" name="campground[price]" placeholder="0"
+                        aria-label="Amount (to the nearest dollar)" required>
+                    <span class="input-group-text">.00</span>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" type="text" name="campground[description]" id="description"
+                    required></textarea>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <div class="input-group mb-3 custom-file">
+                    <input type="file" class="form-control" id="image" name="image" multiple>
+                    <label class="input-group-text custom-file-label" for="image">Upload</label>
+                </div>
+            </div>
+
+
+            <!-- <input type="file" name="image" id="" multiple> -->
             <!-- <div class="mb-3">
                 <label class="form-label" for="image">Image URL</label>
                 <input class="form-control" type="text" name="campground[image]" id="image" required>
@@ -33,26 +63,6 @@
                     Looks good!
                 </div>
             </div> -->
-
-            <div class="mb-3">
-                <label class="mb-2" for="form-label" for="price">Campground Price</label>
-                <div class="input-group">
-                    <span class="input-group-text">$</span>
-                    <input type="text" class="form-control" id="price" name="campground[price]" placeholder="0" aria-label="Amount (to the nearest dollar)" required>
-                    <span class="input-group-text">.00</span>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                  </div>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label" for="description">Description</label>
-                <textarea class="form-control" type="text" name="campground[description]" id="description" required></textarea>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
-            </div>
 
 
             <div class="mb-3">
@@ -63,6 +73,3 @@
         <a href="/campgrounds/">ALL Campgrounds</a>
     </div>
 </div>
-
-
-

@@ -54,10 +54,12 @@
             <!-- ! Do not display the buttons if user is not logged in -->
             <% if(currentUser && camp.author.equals(currentUser._id)){ %>
             <div class="card-body">
+                <i class="fa-solid fa-pen-to-square"></i>
                 <a class="card-link btn btn-warning" href="/campgrounds/<%= camp._id %>/edit ">Edit</a>
                 <form class="d-inline" action="/campgrounds/<%= camp._id %>?_method=DELETE" method="POST">
                     <button class="btn btn-danger">Delete</button>
                 </form>
+                <button type="button" class="btn btn-success">Add a new </button>
             </div>
             <%  } %>
 
