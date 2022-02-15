@@ -1,5 +1,6 @@
 const Campground = require('../models/campground');
 const mongoose = require('mongoose');
+const { cloudinary } = require('../cloudinary')
 
 // ! INDEX
 module.exports.index = async (req, res) => {
@@ -90,6 +91,10 @@ module.exports.editPut = async(req, res) => {
 
     // deleting an image (only if selected) 
     if(req.body.deleteImages){
+        for(let filename of req.body.deleteImages){
+            await cloudinary.uploader.destroy(filename);
+        }
+
         // pull those images from `images` array
         await camp.updateOne({ $pull: { images: { filename: {$in: req.body.deleteImages }}}});
     }
