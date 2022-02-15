@@ -3,15 +3,22 @@ const mongoose = require('mongoose');
 const Review = require('./review');
 const Schema = mongoose.Schema;
 
+
+const ImageSchema = new Schema({
+    url: String,
+    filename: String,
+})
+
+// ? no need to store these in database, that's why it's called virtual property
+// ? will be called everytime we call 'thumbnail'!
+ImageSchema.virtual('thumbnail').get(function() {
+    return this.url.replace('/upload', '/upload/w_200');
+});
+
 // TODO: DATE ADDED! --> https://momentjs.com/ 
 const CampgroundSchema = new Schema({
     title: String,
-    images: [
-        {
-            url: String,
-            filename: String,
-        }
-    ],
+    images: [ImageSchema],
     price: Number,
     description: String,
     location: String,
