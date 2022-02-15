@@ -12,9 +12,9 @@ const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 module.exports.index = async (req, res) => {
     const campgrounds = await Campground.find({})
         .populate({path: 'reviews'})
-        .limit(20);
-        ;
-    
+        // some campground we can recommend...
+        .limit(30);
+
     // returns an array
     res.render('campgrounds/index', {campgrounds});
 }
