@@ -1,4 +1,4 @@
-const data = require('./midwest.json');
+const data = require('./campgroundData.json');
 
 const mongoose = require('mongoose');
 const Campground = require('../models/campground');
@@ -23,7 +23,7 @@ const seedDB = async () => {
     for (let i = 0; i < data.length; i++) {
 
         let obj = data[i];
-        console.log(obj['Longitude']);
+        console.log(`${i}/${data.length}`);
 
 
         const camp = new Campground({

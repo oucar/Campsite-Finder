@@ -7,11 +7,13 @@ const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapBoxToken = process.env.MAPBOX_TOKEN;
 const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 
+
 // ! INDEX
 module.exports.index = async (req, res) => {
-    const campgrounds = await Campground.find({}).populate({
-        path: 'reviews'
-    });
+    const campgrounds = await Campground.find({})
+        .populate({path: 'reviews'})
+        .limit(20);
+        ;
     
     // returns an array
     res.render('campgrounds/index', {campgrounds});
