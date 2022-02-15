@@ -87,6 +87,12 @@ module.exports.editPut = async(req, res) => {
     // we are pushing this time, so that we don't overwrite the existing images
     const imgs = req.files.map(f => ({url: f.path, filename: f.filename}));
     camp.images.push(...imgs);
+
+    // deleting an image (only if selected) 
+    if(req.body.deleteImages){
+        // pull those images from `images` array
+        await camp.updateOne({ $pull: { images: { filename: {$in: req.body.deleteImages }}}});
+    }
     await camp.save();
 
     req.flash('success', 'Successfully updated a campground.');
