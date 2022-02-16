@@ -1,4 +1,9 @@
 <%- layout('layouts/boilerplate')%>
+<!-- Cluster map -->
+<div id="map" style="width: 100%; height: 500px;">
+
+</div>
+
 
 <h1>CAMPGROUNDS!</h1>
 <ul>
@@ -46,3 +51,11 @@
 
     <% } %>
 </ul>
+
+<script>
+    const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
+    const campgrounds = {features: <%- JSON.stringify(campgrounds) %>};
+</script>
+
+<!-- Clustermap js -->
+<script src="/js/clusterMap.js"></script>
