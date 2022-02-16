@@ -7,13 +7,19 @@ const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapBoxToken = process.env.MAPBOX_TOKEN;
 const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 
+// GeoIP: https://www.npmjs.com/package/geoip-lite
+const geoip = require('geoip-lite');
+// let ip = "67.38.20.100";
+// var geo = geoip.lookup(ip);
+// console.log(geo);
 
 // ! INDEX
 module.exports.index = async (req, res) => {
     const campgrounds = await Campground.find({})
         .populate({path: 'reviews'})
         // some campground we can recommend...
-        .limit(30);
+        .limit(30)
+        // .skip(Math.random()*9000);
 
     // returns an array
     res.render('campgrounds/index', {campgrounds});
