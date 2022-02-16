@@ -15,6 +15,9 @@ ImageSchema.virtual('thumbnail').get(function() {
     return this.url.replace('/upload', '/upload/w_200');
 });
 
+// required for using virtuals in json
+const opts = { toJSON: { virtuals: true } };
+
 // TODO: DATE ADDED! --> https://momentjs.com/ 
 const CampgroundSchema = new Schema({
     title: String,
@@ -43,7 +46,16 @@ const CampgroundSchema = new Schema({
             ref: 'Review',
         }
     ]
-})
+}, opts)
+
+// ? virtual property for the mapbox cluster map
+CampgroundSchema.virtual('properties.popUpMarkup').get(function () {
+    return `
+    <strong><a href="/campgrounds/${this._id}">${this.title}</a><strong>
+    <p>${this.description.substring(0, 20)}...</p>`
+});
+
+
 
 // Middleware for deleting a campground!
 // we used "await Campground.findByIdAndDelete(id);" in app.js
