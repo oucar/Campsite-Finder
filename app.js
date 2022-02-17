@@ -13,6 +13,7 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const ExpressError = require('./utils/ExpressError');
+const mongoSanitize = require('express-mongo-sanitize');
 
 // Models
 const Campground = require('./models/campground');
@@ -80,15 +81,23 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 
+// mongo sanitize
+app.use(mongoSanitize());
+
+
 // middleware
 // ! in every request we will have access to success flash under the key success in locals
 app.use((req, res, next) => {
 
-    // check returnTo!
-    console.log(req.session);
+    // ? check returnTo! -> returning back to the page if not logged in
+    // console.log(req.session);
 
     // ! we will have access to currentUser in all templates
     res.locals.currentUser = req.user;
+
+    // express-mongo-sanitize
+    // ? '?$gt': 'lorem ipsum' ? will be prevented with the help of this package
+    console.log(req.query);
 
     // all success, errors and other possible flash messages from cookies
     res.locals.success = req.flash('success');
