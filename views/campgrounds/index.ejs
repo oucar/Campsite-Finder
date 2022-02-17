@@ -3,6 +3,9 @@
 <div id="map" style="width: 100%; height: 500px; margin: 0;">
 
 </div>
+
+
+<h1>CAMPGROUNDS!</h1>
 <ul>
     <% for(let camp of campgrounds){ %>
     <% let avgRating = 0; %>
@@ -20,11 +23,10 @@
         <div class="row">
             <div class="col-md-4">
                 <% if(camp.images.length){ %>
-                <img class="img-fluid" alt="Campground image" src="<%= camp.images[0].url %>">
+                    <img class="img-fluid" alt="Campground image" src="<%= camp.images[0].url %>">
                 <% } else{ %>
-                <img class="img-fluid" alt="Campground image"
-                    src="https://res.cloudinary.com/dj0mmzypj/image/upload/v1644911572/Campsite-Finder/qyqnwhjhte5vuuingrms.jpg">
-                <% } %>
+                    <img class="img-fluid" alt="Campground image" src="https://res.cloudinary.com/dj0mmzypj/image/upload/v1644911572/Campsite-Finder/qyqnwhjhte5vuuingrms.jpg">
+                <% } %> 
             </div>
             <div class="col-md-8">
                 <h5 class="card-title"> <%= camp.title %> </h5>
@@ -52,9 +54,7 @@
 
 <script>
     const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
-    const campgrounds = {
-        features: < % -JSON.stringify(campgrounds) % >
-    };
+    const campgrounds = {features: <%- JSON.stringify(campgrounds) %>};
 </script>
 
 <!-- Clustermap js -->
