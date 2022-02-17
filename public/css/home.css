@@ -11,7 +11,7 @@ body {
 .nav-link {
     padding: 0.25rem 0;
     font-weight: 700;
-    color:#333;
+    color:rgb(73, 73, 73);
     margin-left: 1rem;
     border-bottom: 0.25rem solid transparent;
 }
