@@ -7,14 +7,26 @@
     <title>@oucar || Campground Finder</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
         integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
-    <link rel="stylesheet" href="/stylesheets/home.css">
+    <link rel="stylesheet" href="/css/home.css">
+
+    <!-- animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
 </head>
 
+
 <body class="d-flex text-center text-white bg-dark">
+
+    <video autoplay muted loop id="background-video">
+        <source src="/nature.mp4" type="video/mp4">
+    </video>
+
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
         <header class="mb-auto">
             <div>
-                <h3 class="float-md-left mb-0">Campground Finder</h3>
+                <h3 class="float-md-left mb-0">
+                    <span class="brand-name">@oucar</span>
+                </h3>
                 <nav class="nav nav-masthead justify-content-center float-md-right">
                     <a class="nav-link active" aria-current="page" href="#">Home</a>
                     <a class="nav-link" href="/campgrounds">Campgrounds</a>
@@ -28,15 +40,15 @@
             </div>
         </header>
         <main class="px-3">
-            <h1>YelpCamp</h1>
-            <p class="lead"> Welcome to YelpCamp! <br> Jump right in and explore our many campgrounds. <br>
-                Feel free to share some of your own and comment on others!</p>
-            <a href="/campgrounds" class="btn btn-lg btn-secondary font-weight-bold border-white bg-white">View
+            <h1 class="mb-3">Campground Finder</h1>
+            <p class="lead"> Welcome to Campground Finder! <br> Explore over 9000 campgrounds in North America. <br>
+                Give feedbacks, share new photos and add your own campground if you think we're missing something!</p>
+            <a href="/campgrounds" class="btn btn-lg btn-secondary font-weight-bold border-white bg-white animate__animated animate__infinite animate__pulse">View
                 Campgrounds</a>
         </main>
 
         <footer class="mt-auto text-white-50">
-            <p>&copy; 2020 </p>
+            <p>&copy; 2022 | @oucar </p>
         </footer>
 
 
