@@ -1,4 +1,5 @@
 #main-content{
+    margin-top: 30px;
     min-height: 90%;  /* Fallback for browsers do NOT support vh unit */
     min-height: 90vh; /* These two lines are counted as one :-)       */
   

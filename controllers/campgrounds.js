@@ -23,10 +23,10 @@ const city = geo.city;
 
 // ! INDEX
 module.exports.index = async (req, res) => {
-    const campgrounds = await Campground.find({})
+    const campgrounds = await Campground.find({location: {$regex: "IN"}})
         .populate({path: 'reviews'})
         // some campground we can recommend...
-        .limit(50)
+        // .limit(50)
         // .skip(Math.random()*9000);
     
     // returns an array
