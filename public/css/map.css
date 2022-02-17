@@ -1,0 +1,32 @@
+.map-index {
+    display: block;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin-top: 56px;
+    z-index: 999;
+}
+
+
+.map-show {
+    width: 100%;
+    height: 300px;
+}
+
+.all-cg {
+    background-color: red;
+}
+
+
+
+#main-content {
+    margin-top: 500px;
+    z-index: -1;
+}
+
+h2,
+p {
+    text-align: center;
+}
