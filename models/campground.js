@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 const Review = require('./review');
 const Schema = mongoose.Schema;
-
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const ImageSchema = new Schema({
     url: String,
@@ -73,7 +73,8 @@ CampgroundSchema.post('findOneAndDelete', async function(deleted) {
     } else{
         console.log("Nothing to delete in the campground.");
     } // end if else
-
 })
+
+CampgroundSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Campground', CampgroundSchema);

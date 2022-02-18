@@ -7,30 +7,31 @@ const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapBoxToken = process.env.MAPBOX_TOKEN;
 const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 
-// GeoIP + ip: https://www.npmjs.com/package/geoip-lite
-const geoip = require('geoip-lite');
-const ip = require("ip");
-// console.log("The IP is %s", geoip.pretty(ip.address()));
-
-// ! production
-const geo = geoip.lookup(`207.97.227.239`);
-const country = geo.country;
-const state = geo.region;
-const city = geo.city;
-// ! deployment
-// const geo = geoip.lookup(ip.address());
-
-
 // ! INDEX
 module.exports.index = async (req, res) => {
-    const campgrounds = await Campground.find({location: {$regex: "IN"}})
-        .populate({path: 'reviews'})
-        // some campground we can recommend...
-        // .limit(50)
-        // .skip(Math.random()*9000);
+    if (!req.query.page) {
+        const campgrounds = await Campground.paginate({}, {
+            populate: {
+                path: 'reviews'
+            },
+            limit: 1000,
+        });
+        // console.log(campgrounds);
+
+        res.render('campgrounds/index', { campgrounds })
+    } else {
+        const { page } = req.query;
+        const campgrounds = await Campground.paginate({}, {
+            page,
+            populate: {
+                path: 'reviews'
+            },
+            limit: 1000
+        });
+        res.status(200).json(campgrounds);
+    }
     
-    // returns an array
-    res.render('campgrounds/index', {campgrounds, country, state, city, });
+
 }
 
 // ! NEW 
