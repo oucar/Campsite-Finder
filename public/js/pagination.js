@@ -14,7 +14,7 @@ $(document).ready(function () {
             window.clearInterval(interval);
             second = -1;
         }
-        $('#paginate')[0].click();
+        // $('#paginate')[0].click();
       }, second);
 
 });

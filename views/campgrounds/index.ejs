@@ -1,11 +1,16 @@
 <%- layout('layouts/boilerplate')%>
 <!-- Cluster map -->
-<div id="map" class="map-index" style="width: 100%; height: 400px;"></div>
+<div id="map" class="map-index" style="width: 100%; height: 500px; margin-left: 0;"></div>
+<div class="map-placeholder"></div>
+
+<div class="mb-5 mt-5 text-center">
+    <h2>There are...</h2>
+    <p><%= campgrounds.length %> campgrounds in Midwest. </p>
+</div>
 
 <div class="container" id="campgrounds-container">
-    <h2>Have fun!</h2>
-
-    <% for(let camp of campgrounds.docs){ %>
+    
+    <% for(let camp of campgrounds){ %>
     <% let avgRating = 0; %>
     <% let totalReviews = camp.reviews.length; %>
     <% for(let review of camp.reviews){ %>
@@ -60,14 +65,15 @@
     <% } %>    
 </div>
 
-<div class="text-center mb-5">
+<!-- Pagination -->
+<!-- <div class="text-center mb-5">
     <a href="/campgrounds?page=<%= campgrounds.nextPage %>" id="paginate" class="btn btn-primary" style="margin-bottom: 30px;">View More</a>
-</div>
+</div> -->
 
 
 <script>
     const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
-    const campgrounds = {features: <%-JSON.stringify(campgrounds.docs) %>}
+    const campgrounds = {features: <%-JSON.stringify(campgrounds) %>}
 </script>
 
 <script src="/js/pagination.js"></script>

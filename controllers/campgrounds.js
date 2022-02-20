@@ -9,29 +9,14 @@ const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 
 // ! INDEX
 module.exports.index = async (req, res) => {
-    if (!req.query.page) {
-        const campgrounds = await Campground.paginate({}, {
-            populate: {
-                path: 'reviews'
-            },
-            limit: 1000,
-        });
-        // console.log(campgrounds);
-
-        res.render('campgrounds/index', { campgrounds })
-    } else {
-        const { page } = req.query;
-        const campgrounds = await Campground.paginate({}, {
-            page,
-            populate: {
-                path: 'reviews'
-            },
-            limit: 1000
-        });
-        res.status(200).json(campgrounds);
-    }
+    const campgrounds = await Campground.find({})
+        .populate({path: 'reviews'})
+        // some campground we can recommend...
+        // .limit(50)
+        // .skip(Math.random()*9000);
     
-
+    // returns an array
+    res.render('campgrounds/index', {campgrounds});
 }
 
 // ! NEW 
