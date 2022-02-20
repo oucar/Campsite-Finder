@@ -7,7 +7,7 @@
   <div>
     <strong><%= err.statusCode %></strong> - <%= err.message %> 
     
-    <% if(process.env.NODE.ENV !== 'production'){ %> 
+    <% if(process.env.NODE_ENV !== 'production'){ %> 
       <p><%= err.stack %> </p>
     <% } %> 
 
