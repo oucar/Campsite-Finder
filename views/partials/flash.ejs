@@ -1,17 +1,21 @@
 <!-- SUCCESS - GREEN -->
-<% if(success && success.length){ %> 
-    <!-- REFERENCE: BOOTSTRAP -->
-    <div class="alert alert-success alert-dismissible fade show mt-5" role="alert">
-        <%= success  %> 
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-<% } %> 
+<% if(success && success.length){ %>
+<!-- REFERENCE: BOOTSTRAP -->
+<div class="alert alert-success text-center alert-dismissible fade show mt-5" role="alert" style="position:absolute; z-index: 999; left: 0; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto; 
+    width: 400px;">
+  <%= success  %>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<% } %>
 
 <!-- ERROR - RED -->
-<% if(error && error.length){ %> 
-    <!-- REFERENCE: BOOTSTRAP -->
-    <div class="alert alert-danger alert-dismissible fade show mt-5" role="alert">
-        <%= error  %> 
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-<% } %> 
+<% if(error && error.length){ %>
+<!-- REFERENCE: BOOTSTRAP -->
+<div class="alert alert-danger alert-dismissible fade show mt-5" role="alert">
+  <%= error  %>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<% } %>

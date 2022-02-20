@@ -54,6 +54,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // session
 const sessionConfig = {
+    name: '__iLoveLegos!',
     secret: 'better!',
     resave: false,
     saveUninitialized: true,
@@ -63,6 +64,8 @@ const sessionConfig = {
         maxAge: 1000 * 60 * 60 * 24 * 7,
         // cannot be accessed through client side scripts
         httpOnly: true,
+        // only works in https!! - for deployment only
+        // secure: true,
     }
     // store: mongo,
 }
