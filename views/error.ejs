@@ -6,7 +6,11 @@
   </svg>
   <div>
     <strong><%= err.statusCode %></strong> - <%= err.message %> 
-    <p><%= err.stack %> </p>
+    
+    <% if(process.env.NODE.ENV !== 'production'){ %> 
+      <p><%= err.stack %> </p>
+    <% } %> 
+
   </div>
 </div>
 
