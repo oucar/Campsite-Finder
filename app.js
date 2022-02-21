@@ -26,6 +26,7 @@ const mongoose = require('mongoose');
 const {
     exists
 } = require('./models/campground');
+
 mongoose.connect('mongodb://localhost:27017/campgrounds', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
