@@ -1,22 +1,32 @@
 const Campground = require('../models/campground');
 const mongoose = require('mongoose');
-const { cloudinary } = require('../cloudinary')
+const {
+    cloudinary
+} = require('../cloudinary')
 
 // mapbox
 const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapBoxToken = process.env.MAPBOX_TOKEN;
-const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
+const geocoder = mbxGeocoding({
+    accessToken: mapBoxToken
+});
 
 // ! INDEX
 module.exports.index = async (req, res) => {
     const campgrounds = await Campground.find({})
-        .populate({path: 'reviews'})
-        // some campground we can recommend...
-        // .limit(50)
-        // .skip(Math.random()*9000);
-    
+        .populate({
+            path: 'reviews'
+        })
+    // some campground we can recommend...
+    // .limit(50)
+    // .skip(Math.random()*9000);
+
+    res.set('Content-Security-Policy',
+        "default-src 'self' https://*.mapbox.com ;base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src https://cdnjs.cloudflare.com https://api.mapbox.com 'self' blob: ;script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests;")
     // returns an array
-    res.render('campgrounds/index', {campgrounds});
+    res.render('campgrounds/index', {
+        campgrounds
+    });
 }
 
 // ! NEW 
@@ -36,14 +46,17 @@ module.exports.newPost = async (req, res) => {
     // console.log(geoData.body.features[0].geometry);
 
     const campground = new Campground(req.body.campground);
-    campground.geometry =  geoData.body.features[0].geometry;
+    campground.geometry = geoData.body.features[0].geometry;
     campground.author = req.user._id;
-    campground.images = req.files.map(f => ({url: f.path, filename: f.filename}))
+    campground.images = req.files.map(f => ({
+        url: f.path,
+        filename: f.filename
+    }))
     await campground.save();
-    
-    try{
+
+    try {
         req.flash('success', 'Successfully created a new campground!')
-    } catch (e){
+    } catch (e) {
         req.flash('error', `Something went wrong: ${e}`);
     }
 
@@ -56,17 +69,19 @@ module.exports.newPost = async (req, res) => {
 module.exports.showGet = async (req, res) => {
     // ? https://stackoverflow.com/questions/17223517/mongoose-casterror-cast-to-objectid-failed-for-value-object-object-at-path
     // check if _id is valid
-    if(mongoose.Types.ObjectId.isValid(req.params.id)){
+    if (mongoose.Types.ObjectId.isValid(req.params.id)) {
         // populate reviews and author
         const camp = await Campground.findById(req.params.id).populate({
             // ! we also need to populate each review's author! - nested populate
-            path: 'reviews', 
+            path: 'reviews',
             populate: {
                 path: 'author'
             }
         }).populate('author');
         console.log(camp);
-        res.render('campgrounds/show', {camp});
+        res.render('campgrounds/show', {
+            camp
+        });
     } else {
         req.flash('error', 'This campground might be deleted, or who knows, it may have never existed (just like you).');
         return res.redirect('/campgrounds')
@@ -77,37 +92,56 @@ module.exports.showGet = async (req, res) => {
 // no need to validate when someone is just visiting the edit page!
 // user is not logged in, (prevent Postman submission and trying to access the page by typing the link)
 // user onur cannot edit http://localhost:3000/campgrounds/61f4ed4eec97d227ef94b941
-module.exports.editGet = async(req, res) => {
-    const { id } = req.params;
+module.exports.editGet = async (req, res) => {
+    const {
+        id
+    } = req.params;
     const camp = await Campground.findById(id);
 
     // cannot find the campground
-    if(!camp){
+    if (!camp) {
         req.flash('error', 'Cannot find the campground! :(');
         return res.redirect('/campgrounds');
     }
 
-    res.render('campgrounds/edit', {camp});
+    res.render('campgrounds/edit', {
+        camp
+    });
 }
 
-module.exports.editPut = async(req, res) => {
-    const { id } = req.params;
-    
+module.exports.editPut = async (req, res) => {
+    const {
+        id
+    } = req.params;
+
     // spread the object (camground[title], campground[location])
-    const camp = await Campground.findByIdAndUpdate(id, {...req.body.campground});
+    const camp = await Campground.findByIdAndUpdate(id, {
+        ...req.body.campground
+    });
 
     // we are pushing this time, so that we don't overwrite the existing images
-    const imgs = req.files.map(f => ({url: f.path, filename: f.filename}));
+    const imgs = req.files.map(f => ({
+        url: f.path,
+        filename: f.filename
+    }));
     camp.images.push(...imgs);
 
     // deleting an image (only if selected) 
-    if(req.body.deleteImages){
-        for(let filename of req.body.deleteImages){
+    if (req.body.deleteImages) {
+        for (let filename of req.body.deleteImages) {
             await cloudinary.uploader.destroy(filename);
         }
 
         // pull those images from `images` array
-        await camp.updateOne({ $pull: { images: { filename: {$in: req.body.deleteImages }}}});
+        await camp.updateOne({
+            $pull: {
+                images: {
+                    filename: {
+                        $in: req.body.deleteImages
+                    }
+                }
+            }
+        });
     }
     await camp.save();
 
@@ -116,9 +150,11 @@ module.exports.editPut = async(req, res) => {
 }
 
 // ! DELETE
-module.exports.deleteDelete = async(req, res) => {
-    const { id } = req.params;
-    await Campground.findByIdAndDelete(id); 
+module.exports.deleteDelete = async (req, res) => {
+    const {
+        id
+    } = req.params;
+    await Campground.findByIdAndDelete(id);
 
     // flash message
     req.flash('success', 'Successfully deleted a campground.');
