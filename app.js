@@ -160,7 +160,7 @@ app.use(
 
     helmet.contentSecurityPolicy({
         directives: {
-            defaultSrc: ["http://localhost:3000/", "https://thumbs.gfycat.com/"],
+            defaultSrc: ["http://localhost:3000/", "https://thumbs.gfycat.com/", "https://oucar-campground-finder.herokuapp.com",],
             connectSrc: ["'self'", ...connectSrcUrls],
             scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
             styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
