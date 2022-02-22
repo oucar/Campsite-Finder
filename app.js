@@ -13,7 +13,6 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const ExpressError = require('./utils/ExpressError');
-const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 
 // Models
@@ -21,13 +20,18 @@ const Campground = require('./models/campground');
 const Review = require('./models/review');
 const User = require('./models/user');
 
-// mongoose
+// mongoose, mongodb
+const dbUrl = process.env.DB_URL;
+// const dbUrl = 'mongodb://localhost:27017/campgrounds'
 const mongoose = require('mongoose');
+const mongoSanitize = require('express-mongo-sanitize');
+const MongoStore = require('connect-mongo');
+
 const {
     exists
 } = require('./models/campground');
 
-mongoose.connect('mongodb://localhost:27017/campgrounds', {
+mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
@@ -56,8 +60,22 @@ app.use(methodOverride('_method'));
 // path.join, _dirname!
 app.use(express.static(path.join(__dirname, 'public')));
 
-// session
+// ! session
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    // unneccesary re-saves
+    touchAfter: 24 * 3600,
+    crypto: {
+        secret: '__iLoveLegos!',
+    }
+})
+
+store.on("error", function(e){
+    console.log("Session store error: ", e);
+})
+
 const sessionConfig = {
+    store: store,
     name: '__iLoveLegos!',
     secret: 'better!',
     resave: false,
