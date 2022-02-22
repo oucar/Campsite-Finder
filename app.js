@@ -127,7 +127,7 @@ const scriptSrcUrls = [
     "https://cdn.jsdelivr.net",
     "https://code.jquery.com",
     "https://ajax.googleapis.com/ajax/",
-    "https://oucar-campground-finder.herokuapp.com",
+    "https://oucar-campground-finder.herokuapp.com/",
 ];
 const styleSrcUrls = [
     "https://kit-free.fontawesome.com/",
@@ -138,19 +138,19 @@ const styleSrcUrls = [
     "https://use.fontawesome.com/",
     "https://cdnjs.cloudflare.com/",
     "https://cdn.jsdelivr.net/",
-    "https://oucar-campground-finder.herokuapp.com",
+    "https://oucar-campground-finder.herokuapp.com/",
 ];
 const connectSrcUrls = [
     "https://api.mapbox.com/",
     "https://a.tiles.mapbox.com/",
     "https://b.tiles.mapbox.com/",
     "https://events.mapbox.com/",
-    "https://oucar-campground-finder.herokuapp.com",
+    "https://oucar-campground-finder.herokuapp.com/",
 ];
 const fontSrcUrls = [
     "https://cdnjs.cloudflare.com/ajax/",
     "https://thumbs.gfycat.com/",
-    "https://oucar-campground-finder.herokuapp.com",
+    "https://oucar-campground-finder.herokuapp.com/",
 ];
 app.use(
     helmet({
@@ -160,7 +160,7 @@ app.use(
 
     helmet.contentSecurityPolicy({
         directives: {
-            defaultSrc: ["http://localhost:3000/", "https://thumbs.gfycat.com/", "https://oucar-campground-finder.herokuapp.com",],
+            defaultSrc: ["http://localhost:3000/", "https://thumbs.gfycat.com/", "https://oucar-campground-finder.herokuapp.com/",],
             connectSrc: ["'self'", ...connectSrcUrls],
             scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
             styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
@@ -198,7 +198,7 @@ app.use((req, res, next) => {
 
     // express-mongo-sanitize
     // ? '?$gt': 'lorem ipsum' ? will be prevented with the help of this package
-    console.log(req.query);
+    // console.log(req.query);
 
     // all success, errors and other possible flash messages from cookies
     res.locals.success = req.flash('success');
