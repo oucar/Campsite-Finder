@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 const Campground = require('../models/campground');
 
 
-mongoose.connect('mongodb://localhost:27017/campgrounds', {
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/campgrounds'
+mongoose.connect('mongodb+srv://admin:DdBMb44VHolfv7ze@camspite-finder.shrep.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
