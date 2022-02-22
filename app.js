@@ -155,9 +155,7 @@ const fontSrcUrls = [
 app.use(
     helmet({
         crossOriginEmbedderPolicy: false,
-        // ...
     }),
-
     helmet.contentSecurityPolicy({
         directives: {
             defaultSrc: ["http://localhost:3000/", "https://thumbs.gfycat.com/", "https://oucar-campground-finder.herokuapp.com/",],
