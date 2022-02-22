@@ -76,10 +76,14 @@ module.exports.showGet = async (req, res) => {
                 path: 'author'
             }
         }).populate('author');
-        console.log(camp);
-        res.render('campgrounds/show', {
-            camp
-        });
+
+        // a user cannot comment more than once
+        let currentReviews = []
+        for(let i = 0; i < camp.reviews.length; i++) {
+            currentReviews[i] = camp.reviews[i].author.username
+        };
+
+        res.render('campgrounds/show', { camp, currentReviews });
     } else {
         req.flash('error', 'This campground might be deleted, or who knows, it may have never existed (just like you).');
         return res.redirect('/campgrounds')
