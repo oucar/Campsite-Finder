@@ -79,15 +79,15 @@
 
         <!-- Interactive Map -->
         <div id='map' class="map-show"></div>
-
-        <% if(currentUser){ %>
+        <!-- <% console.log(`Can comment?: ${!currentReviews.includes(currentUser.username)}`) %> -->
+        <% if(currentUser && !currentReviews.includes(currentUser.username)){ %>
         <h2>Leave a Review</h2>
         <form action="/campgrounds/<%= camp._id %>/reviews" method="POST" class="mb-6 validated-form" novalidate>
             <div class="mb-3">
                 <!-- Slider (Legacy code) -->
                 <!-- <label lass="form-label" for="rating">Rating</label>
-                    <input type="range" class="form-range validated-form" min="1" max="5" name="review[rating]" id="review"
-                        required> -->
+                        <input type="range" class="form-range validated-form" min="1" max="5" name="review[rating]" id="review"
+                            required> -->
                 <fieldset class="starability-checkmark">
                     <input type="radio" id="first-rate" class="input-no-rate" name="review[rating]" value="1" checked
                         aria-label="No rating." />
@@ -119,7 +119,7 @@
 <!-- Display Reviews -->
 <!-- Flex -->
 <div>
-    <div class="row" style="margin-left:0px;">
+    <div class="row" style="margin-left:0px; margin-bottom: 100px;">
         <% for(let review of camp.reviews){ %>
         <div class="card mt-3 justify-content-between">
 
@@ -128,16 +128,18 @@
                 <h6 class="card-subtitle mb-2 text-muted">@<%= review.author.username %> </h6>
                 <p><%= review.body %> </p>
 
-                <p class="starability-result" data-rating="<%=review.rating %>">
-                    Rated: <%= review.rating %> stars
+                <div class="d-flex flex-row justify-content-between ">
 
+                    <p class="starability-result" data-rating="<%=review.rating %>">Rated: <%= review.rating %> stars
+                    </p>
 
                     <% if(currentUser && review.author.equals(currentUser._id)){ %>
                     <!-- method override -->
                     <form action="/campgrounds/<%= camp._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
-                        <button class="btn btn-sm btn-danger">Delete</button>
+                        <button class="btn btn-md btn-danger" style="padding: 10px 50px;">Delete</button>
                     </form>
                     <% } %>
+                </div>
 
             </div>
         </div>
@@ -148,7 +150,7 @@
 
 <script>
     const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
-    const campground = <%- JSON.stringify(camp) %>;
+    const campground = < % -JSON.stringify(camp) % > ;
 </script>
 
 <script src="/js/showMap.js"></script>
