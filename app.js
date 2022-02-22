@@ -21,8 +21,7 @@ const Review = require('./models/review');
 const User = require('./models/user');
 
 // mongoose, mongodb
-const dbUrl = process.env.DB_URL;
-// const dbUrl = 'mongodb://localhost:27017/campgrounds'
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/campgrounds'
 const mongoose = require('mongoose');
 const mongoSanitize = require('express-mongo-sanitize');
 const MongoStore = require('connect-mongo');
@@ -61,12 +60,13 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ! session
+const secret = process.env.SECRET || '__iLoveLegos!';
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     // unneccesary re-saves
     touchAfter: 24 * 3600,
     crypto: {
-        secret: '__iLoveLegos!',
+        secret: secret,
     }
 })
 
@@ -77,7 +77,7 @@ store.on("error", function(e){
 const sessionConfig = {
     store: store,
     name: '__iLoveLegos!',
-    secret: 'better!',
+    secret: secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
