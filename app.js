@@ -234,6 +234,8 @@ app.use((err, req, res, next) => {
     // res.send(`${message} - ERROR CODE: ${statusCode}`);
 })
 
-app.listen(3000, () => {
-    console.log(`LIVE ON PORT 30000!`);
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`Campground Finder is live on PORT: ${port}!`);
 })
