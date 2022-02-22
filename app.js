@@ -70,7 +70,7 @@ const store = MongoStore.create({
     }
 })
 
-store.on("error", function(e){
+store.on("error", function (e) {
     console.log("Session store error: ", e);
 })
 
@@ -157,7 +157,7 @@ app.use(
         crossOriginEmbedderPolicy: false,
         // ...
     }),
-    
+
     helmet.contentSecurityPolicy({
         directives: {
             defaultSrc: ["http://localhost:3000/", "https://thumbs.gfycat.com/"],
@@ -172,6 +172,11 @@ app.use(
                 "data:",
                 "https://res.cloudinary.com/",
                 "https://images.unsplash.com/",
+            ],
+            mediaSrc: [
+                "'self'",
+                "blob:",
+                "data:",
             ],
             fontSrc: ["'self'", ...fontSrcUrls],
         },
