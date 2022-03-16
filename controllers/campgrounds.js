@@ -21,6 +21,8 @@ module.exports.index = async (req, res) => {
     // .limit(50)
     // .skip(Math.random()*9000);
 
+        console.log(campgrounds);
+
     // returns an array
     res.render('campgrounds/index', {
         campgrounds
