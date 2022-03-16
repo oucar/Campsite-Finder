@@ -215,6 +215,7 @@ app.use('/', userRoutes);
 
 
 app.get('/', (req, res) => {
+    console.log("HOME");
     res.render('home.ejs');
 })
 
